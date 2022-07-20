@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import Title from "./title"
+import Body from "./body"
 
 const AppContainer = styled.div`
   height: 100vh;
@@ -16,6 +17,7 @@ const App = () => {
   return (
     <AppContainer>
       <Title />
+      <Body />
     </AppContainer>
   )
 }
