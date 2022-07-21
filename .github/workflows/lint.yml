@@ -41,4 +41,4 @@ jobs:
           black: true
           black_auto_fix: true
           prettier: true
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.action_token }}
