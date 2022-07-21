@@ -10,17 +10,17 @@ CORS(app)
 
 @app.route("/")
 def serve():
-    return send_from_directory(app.static_folder, "index.html")
+  return send_from_directory(app.static_folder, "index.html")
 
 
 @app.errorhandler(404)
 def not_found(error):
-    return send_from_directory(app.static_folder, "index.html")
+  return send_from_directory(app.static_folder, "index.html")
 
 
 @app.route("/health")
 def health():
-    return jsonify({"status": "ok"}), 200
+  return jsonify({"status": "ok"}), 200
 
 
 @app.route("/ready")
