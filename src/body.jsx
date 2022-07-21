@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from "react"
+import styled from "styled-components"
 
 const BodyWrapper = styled.div`
   background-color: black;
@@ -8,9 +8,7 @@ const BodyWrapper = styled.div`
 `
 
 const Body = () => {
-  return (
-    <BodyWrapper />
-  )
+  return <BodyWrapper />
 }
 
 export default Body
