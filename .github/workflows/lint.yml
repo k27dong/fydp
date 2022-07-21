@@ -25,11 +25,11 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
-        with:
-          auto_fix: true
-          prettier: true
+      # - name: Run linters
+      #   uses: wearerequired/lint-action@v2
+      #   with:
+      #     auto_fix: true
+      #     prettier: true
 
       - name: Set up Python
         uses: actions/setup-python@v1
@@ -45,3 +45,4 @@ jobs:
           auto_fix: true
           black: true
           black_auto_fix: true
+          prettier: true
