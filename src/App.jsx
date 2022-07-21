@@ -11,7 +11,7 @@ const AppContainer = styled.div`
   flex-direction: column;
   width: 100%;
   padding-bottom: 1rem;
-`;
+`
 
 const App = () => {
   return (
