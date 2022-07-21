@@ -43,7 +43,7 @@ const Title = () => {
         <Name>F Y D P</Name>
       </TitleComponent>
       <TitleComponent>
-        <DropdownWrapper sx={{ minWidth: "15rem" }}>
+        <DropdownWrapper sx={{ minWidth: "18vw" }}>
           <FormControl fullWidth>
             <InputLabel>Input Method</InputLabel>
             <Select
