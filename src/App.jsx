@@ -1,4 +1,4 @@
-import React, { useState }  from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import Title from "./title"
 import Body from "./body"
@@ -21,9 +21,9 @@ const App = () => {
 
   return (
     <AppContainer>
-      <Title input={input} setInput={setInput}/>
-      <Body input={input}/>
-      <Result input={input}/>
+      <Title input={input} setInput={setInput} />
+      <Body input={input} />
+      <Result input={input} />
       <Footer />
     </AppContainer>
   )

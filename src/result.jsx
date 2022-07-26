@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import {DEFAULT_SHADOW } from "./const"
+import { DEFAULT_SHADOW } from "./const"
 
 const ResultWrapper = styled.div`
   width: 80%;

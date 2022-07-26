@@ -5,7 +5,12 @@ import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
-import { MODE_IMAGE, MODE_VIDEO, MODE_LIVESTREAM, DEFAULT_SHADOW } from "./const"
+import {
+  MODE_IMAGE,
+  MODE_VIDEO,
+  MODE_LIVESTREAM,
+  DEFAULT_SHADOW,
+} from "./const"
 
 const TitleContainer = styled.div`
   display: flex;
@@ -32,7 +37,7 @@ const DropdownWrapper = styled(Box)`
   padding: 1.5rem;
 `
 
-const Title = ({input, setInput}) => {
+const Title = ({ input, setInput }) => {
   const handle_change = (e) => {
     setInput(e.target.value)
   }
