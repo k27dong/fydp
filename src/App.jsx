@@ -1,7 +1,10 @@
-import React from "react"
+import React, { useState }  from "react"
 import styled from "styled-components"
 import Title from "./title"
 import Body from "./body"
+import Result from "./result"
+import Footer from "./footer"
+import { MODE_INVALID } from "./const"
 
 const AppContainer = styled.div`
   height: 100vh;
@@ -14,10 +17,14 @@ const AppContainer = styled.div`
 `
 
 const App = () => {
+  const [input, setInput] = useState(MODE_INVALID)
+
   return (
     <AppContainer>
-      <Title />
-      <Body />
+      <Title input={input} setInput={setInput}/>
+      <Body input={input}/>
+      <Result input={input}/>
+      <Footer />
     </AppContainer>
   )
 }

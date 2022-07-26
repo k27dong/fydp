@@ -1,10 +1,11 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import Box from "@mui/material/Box"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
+import { MODE_IMAGE, MODE_VIDEO, MODE_LIVESTREAM, DEFAULT_SHADOW } from "./const"
 
 const TitleContainer = styled.div`
   display: flex;
@@ -30,9 +31,8 @@ const Name = styled.h1`
 const DropdownWrapper = styled(Box)`
   padding: 1.5rem;
 `
-const Title = () => {
-  const [input, setInput] = useState(0)
 
+const Title = ({input, setInput}) => {
   const handle_change = (e) => {
     setInput(e.target.value)
   }
@@ -51,17 +51,16 @@ const Title = () => {
               label="Input Method"
               onChange={handle_change}
               sx={{
-                boxShadow:
-                  "0 100px 80px rgb(0 0 0 / 7%), 0 41.7776px 33.4221px rgb(0 0 0 / 5%), 0 22.3363px 17.869px rgb(0 0 0 / 4%), 0 12.5216px 10.0172px rgb(0 0 0 / 4%), 0 6.6501px 5.32008px rgb(0 0 0 / 3%), 0 2.76726px 2.21381px rgb(0 0 0 / 2%)",
+                boxShadow: DEFAULT_SHADOW,
                 backgroundColor: "white",
                 "&& fieldset": {
                   border: "0",
                 },
               }}
             >
-              <MenuItem value={1}>Image</MenuItem>
-              <MenuItem value={2}>Video</MenuItem>
-              <MenuItem value={3}>Live Stream</MenuItem>
+              <MenuItem value={MODE_IMAGE}>Image</MenuItem>
+              <MenuItem value={MODE_VIDEO}>Video</MenuItem>
+              <MenuItem value={MODE_LIVESTREAM}>Live Stream</MenuItem>
             </Select>
           </FormControl>
         </DropdownWrapper>
