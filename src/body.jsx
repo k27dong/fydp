@@ -14,15 +14,23 @@ const InputButton = styled(Button)`
   height: 100%;
 `
 
-const Test = styled.div`
-  background-color: black;
+const EmptyInputHolder = styled.div`
+  font-size: 1.5rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  text-align: center;
+  color: #757575;
+  top: 50%;
+  position: relative;
 `
 
 const Body = ({ input }) => {
   return (
     <BodyWrapper>
       {input === MODE_INVALID ? (
-        <Test />
+        <EmptyInputHolder>
+          PLEASE SELECT AN INPUT METHOD
+        </EmptyInputHolder>
       ) : input === MODE_IMAGE ? (
         <InputButton variant="outlined">+</InputButton>
       ) : input === MODE_VIDEO ? (
