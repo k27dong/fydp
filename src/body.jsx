@@ -28,9 +28,7 @@ const Body = ({ input }) => {
   return (
     <BodyWrapper>
       {input === MODE_INVALID ? (
-        <EmptyInputHolder>
-          PLEASE SELECT AN INPUT METHOD
-        </EmptyInputHolder>
+        <EmptyInputHolder>PLEASE SELECT AN INPUT METHOD</EmptyInputHolder>
       ) : input === MODE_IMAGE ? (
         <InputButton variant="outlined">+</InputButton>
       ) : input === MODE_VIDEO ? (
