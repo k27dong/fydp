@@ -45,7 +45,9 @@ const Title = ({ input, setInput }) => {
   return (
     <TitleContainer>
       <TitleComponent>
-        <Name>F Y D P</Name>
+        <a href="/" style={{ textDecoration: "none" }}>
+          <Name>F Y D P</Name>
+        </a>
       </TitleComponent>
       <TitleComponent>
         <DropdownWrapper sx={{ minWidth: "18vw" }}>
