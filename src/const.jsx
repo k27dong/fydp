@@ -1,4 +1,4 @@
-export const MODE_INVALID = 0
+export const MODE_INVALID = ''
 export const MODE_IMAGE = 1
 export const MODE_VIDEO = 2
 export const MODE_LIVESTREAM = 3
