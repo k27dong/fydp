@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
+import axios from "axios"
 import styled from "styled-components"
 import Button from "@mui/material/Button"
-import { MODE_INVALID, MODE_IMAGE, MODE_VIDEO, MODE_LIVESTREAM } from "./const"
+import { MODE_INVALID, MODE_IMAGE, MODE_VIDEO, MODE_LIVESTREAM, API_URL } from "./const"
 
 const BodyWrapper = styled.div`
   width: 50%;
@@ -31,10 +32,14 @@ const ImagePreview = styled.img`
   display: block;
 `
 
-const ResetButton = styled(Button)`
+const OptionWrapper = styled.div`
+  text-align: center;
+`
+
+const Option = styled(Button)`
   /* override mui default css */
-  display: block !important;
-  margin: 1rem auto 0 auto !important;
+  display: inline-block !important;
+  margin: 1rem 1rem 0 1rem !important;
   min-width: 7rem !important;
 `
 
@@ -58,6 +63,20 @@ const Body = ({ input }) => {
     if (!!e.target.files && e.target.files.length !== 0) {
       setSelectedFile(e.target.files[0])
     }
+  }
+
+  const get_image_result = (e) => {
+    e.preventDefault()
+    const form_data = new FormData()
+    form_data.append("image", selectedFile)
+    axios
+      .post(API_URL + "/api/image", form_data)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -91,9 +110,10 @@ const Body = ({ input }) => {
         <h1>invalid input</h1>
       )}
       {!!selectedFile && (
-        <ResetButton onClick={() => setSelectedFile(undefined)}>
-          Reset
-        </ResetButton>
+        <OptionWrapper>
+          <Option onClick={() => setSelectedFile(undefined)}>Reset</Option>
+          <Option onClick={(e) => get_image_result(e)}>Apply</Option>
+        </OptionWrapper>
       )}
     </BodyWrapper>
   )

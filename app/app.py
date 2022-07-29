@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from image import process_image
 
 app = Flask(
     __name__, static_folder="../build", static_url_path="", template_folder="../build"
@@ -14,7 +15,7 @@ def serve():
 
 
 @app.errorhandler(404)
-def not_found(error):
+def not_found():
     return send_from_directory(app.static_folder, "index.html")
 
 
@@ -30,6 +31,8 @@ def ready():
 
 @app.route("/api/image", methods=["POST"])
 def image():
+    raw_img = request.files["image"].read()
+    process_image(raw_img)
     return jsonify({"status": "ok"}), 200
 
 
