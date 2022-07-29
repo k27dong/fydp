@@ -16,11 +16,13 @@ idx_to_class = {
     7: "Surprise",
 }
 
+
 def array_to_dictionary(array):
     dictionary = {}
     for i in range(len(array)):
         dictionary[idx_to_class[i]] = array[i]
     return dictionary
+
 
 def process_image(raw_img):
     IMG_SIZE = 260
@@ -37,7 +39,8 @@ def process_image(raw_img):
     filename = "enet_b2_8"
 
     model = torch.load(
-        "app/models/affectnet_emotions/" + filename + ".pt", map_location=torch.device("cpu")
+        "app/models/affectnet_emotions/" + filename + ".pt",
+        map_location=torch.device("cpu"),
     )
     model.eval()
 
