@@ -126,8 +126,8 @@ const Body = ({ input, setResult }) => {
             style={{ minWidth: "7rem", marginRight: "1rem" }}
             loading={false}
             onClick={() => {
-                setSelectedFile(undefined)
-                setResult([])
+              setSelectedFile(undefined)
+              setResult([])
             }}
             variant="contained"
           >
