@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import styled from "styled-components"
 import Button from "@mui/material/Button"
+import LoadingButton from "@mui/lab/LoadingButton"
+import MemoryIcon from "@mui/icons-material/Memory"
 import {
   MODE_INVALID,
   MODE_IMAGE,
@@ -9,6 +11,7 @@ import {
   MODE_LIVESTREAM,
   API_URL,
 } from "./const"
+import { Box } from "@mui/material"
 
 const BodyWrapper = styled.div`
   width: 50%;
@@ -38,20 +41,19 @@ const ImagePreview = styled.img`
   display: block;
 `
 
-const OptionWrapper = styled.div`
+const OptionBox = styled(Box)`
   text-align: center;
+  display: "flex";
+  flex-direction: "column";
+  align-items: "center";
+  justify-content: "center";
+  margin-top: 1rem;
 `
 
-const Option = styled(Button)`
-  /* override mui default css */
-  display: inline-block !important;
-  margin: 1rem 1rem 0 1rem !important;
-  min-width: 7rem !important;
-`
-
-const Body = ({ input }) => {
+const Body = ({ input, setResult }) => {
   const [selectedFile, setSelectedFile] = useState()
   const [preview, setPreview] = useState()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (!selectedFile) {
@@ -72,13 +74,16 @@ const Body = ({ input }) => {
   }
 
   const get_image_result = (e) => {
+    setLoading(true)
     e.preventDefault()
     const form_data = new FormData()
     form_data.append("image", selectedFile)
     axios
       .post(API_URL + "/api/image", form_data)
       .then((res) => {
-        console.log(res)
+        setLoading(false)
+        setResult(res.data.map((element) => Number((element * 100).toFixed(2))))
+        console.log(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -116,10 +121,26 @@ const Body = ({ input }) => {
         <h1>invalid input</h1>
       )}
       {!!selectedFile && (
-        <OptionWrapper>
-          <Option onClick={() => setSelectedFile(undefined)}>Reset</Option>
-          <Option onClick={(e) => get_image_result(e)}>Apply</Option>
-        </OptionWrapper>
+        <OptionBox>
+          <LoadingButton
+            style={{ minWidth: "7rem", marginRight: "1rem" }}
+            loading={false}
+            onClick={() => setSelectedFile(undefined)}
+            variant="contained"
+          >
+            Reset
+          </LoadingButton>
+          <LoadingButton
+            style={{ minWidth: "7rem" }}
+            loading={loading}
+            onClick={(e) => get_image_result(e)}
+            variant="contained"
+            endIcon={<MemoryIcon />}
+            loadingPosition="end"
+          >
+            Apply
+          </LoadingButton>
+        </OptionBox>
       )}
     </BodyWrapper>
   )

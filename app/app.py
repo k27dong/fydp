@@ -44,9 +44,10 @@ def ready():
 def image():
     raw_img = request.files["image"].read()
     emotion_scores = process_image(raw_img)
-    scores = {EMOTION_INDEX[i]: emotion_scores[i] for i in range(len(emotion_scores))}
-    print(scores)
-    return jsonify(scores), 200
+    # scores = {EMOTION_INDEX[i]: float(emotion_scores[i]) for i in range(len(emotion_scores))}
+    scores = [float(x) for x in emotion_scores]
+
+    return scores, 200
 
 
 if __name__ == "__main__":

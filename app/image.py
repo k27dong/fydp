@@ -39,4 +39,8 @@ def process_image(raw_img):
         scores = model(img_tensor)
         scores = scores[0].data.numpy()
 
+
+    # softmax
+    scores = np.exp(scores) / np.sum(np.exp(scores), axis=0)
+
     return scores

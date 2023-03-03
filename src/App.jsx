@@ -18,12 +18,13 @@ const AppContainer = styled.div`
 
 const App = () => {
   const [input, setInput] = useState(MODE_INVALID)
+  const [result, setResult] = useState({})
 
   return (
     <AppContainer>
-      <Title input={input} setInput={setInput} />
-      <Body input={input} />
-      <Result input={input} />
+      <Title input={input} setInput={setInput}/>
+      <Body input={input} setResult={setResult}/>
+      <Result input={input} result={result}/>
       <Footer />
     </AppContainer>
   )
