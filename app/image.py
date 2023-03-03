@@ -9,6 +9,7 @@ IMG_SIZE = 260
 MODEL_PATH = "app/models/affectnet_emotions/enet_b2_8.pt"
 CASCADE_PATH = "app/haar_cascade_face_detection.xml"
 
+
 def process_image(raw_img):
     test_transforms = transforms.Compose(
         [
@@ -31,7 +32,7 @@ def process_image(raw_img):
     faces = face_cascade.detectMultiScale(gray, 1.1, 6)
 
     # Creating Rectangle around face
-    for (x, y, w, h) in faces:
+    for x, y, w, h in faces:
         face_img = image[y : y + h, x : x + w]
         img_tensor = test_transforms(Image.fromarray(face_img))
         img_tensor.unsqueeze_(0)

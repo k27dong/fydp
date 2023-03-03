@@ -55,7 +55,7 @@ while True:
     faces = face_cascade.detectMultiScale(gray, 1.1, 6)
 
     # Creating Rectangle around face
-    for (x, y, w, h) in faces:
+    for x, y, w, h in faces:
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 250), 2)
         face_img = img[y : y + h, x : x + w]
         img_tensor = test_transforms(Image.fromarray(face_img))
