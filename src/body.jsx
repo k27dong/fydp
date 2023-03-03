@@ -125,7 +125,10 @@ const Body = ({ input, setResult }) => {
           <LoadingButton
             style={{ minWidth: "7rem", marginRight: "1rem" }}
             loading={false}
-            onClick={() => setSelectedFile(undefined)}
+            onClick={() => {
+                setSelectedFile(undefined)
+                setResult([])
+            }}
             variant="contained"
           >
             Reset

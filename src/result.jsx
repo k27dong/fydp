@@ -9,7 +9,7 @@ const ResultWrapper = styled.div`
   background-color: white;
   box-shadow: ${DEFAULT_SHADOW};
   border-radius: 0.75rem;
-  padding: 2.5rem 1rem 1.5rem;
+  padding: 2rem 1rem 1.5rem;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -32,7 +32,10 @@ const EmotionName = styled.div`
   font-size: 1.3rem;
   padding-bottom: 0.5rem;
   width: 85%;
-  border-bottom: 2px solid #ff7d66;
+  box-shadow: inset 0 -2px 0px 0px #ff7d66;
+  -moz-box-shadow: inset 0 -2px 0px 0px #ff7d66;
+  -webkit-box-shadow: inset 0 -2px 0px 0px #ff7d66;
+  height: 100%;
 `
 
 const EmotionWeight = styled.div`
@@ -45,7 +48,9 @@ const Result = ({ input, result }) => {
       {EMOTION_MAP.map((emotion, index) => {
         return (
           <EmotionItem key={index}>
-            <EmotionName>{`${result[index]}%`}</EmotionName>
+            <EmotionName>
+              {result.length === 0 ? "" : `${result[index]}%`}
+            </EmotionName>
             <EmotionWeight>{emotion}</EmotionWeight>
           </EmotionItem>
         )

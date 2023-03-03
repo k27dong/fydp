@@ -13,12 +13,11 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-bottom: 1rem;
 `
 
 const App = () => {
   const [input, setInput] = useState(MODE_INVALID)
-  const [result, setResult] = useState({})
+  const [result, setResult] = useState([])
 
   return (
     <AppContainer>
