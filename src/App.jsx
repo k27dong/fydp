@@ -22,9 +22,9 @@ const App = () => {
 
   return (
     <AppContainer>
-      <Title input={input} setInput={setInput}/>
-      <Body input={input} setResult={setResult}/>
-      <Result input={input} result={result}/>
+      <Title input={input} setInput={setInput} />
+      <Body input={input} setResult={setResult} />
+      <Result input={input} result={result} />
       <Footer />
     </AppContainer>
   )
