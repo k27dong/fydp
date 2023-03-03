@@ -8,6 +8,17 @@ app = Flask(
 
 CORS(app)
 
+EMOTION_INDEX = {
+    0: "Anger",
+    1: "Contempt",
+    2: "Disgust",
+    3: "Fear",
+    4: "Happiness",
+    5: "Neutral",
+    6: "Sadness",
+    7: "Surprise",
+}
+
 
 @app.route("/")
 def serve():
@@ -32,15 +43,11 @@ def ready():
 @app.route("/api/image", methods=["POST"])
 def image():
     raw_img = request.files["image"].read()
-    process_image(raw_img)
-    return jsonify({"status": "ok"}), 200
-
-
-def function_that_takes_long_arguments(
-    long_argument_1, long_argument_2, long_argument_3
-):
-    return long_argument_1
+    emotion_scores = process_image(raw_img)
+    scores = {EMOTION_INDEX[i]: emotion_scores[i] for i in range(len(emotion_scores))}
+    print(scores)
+    return jsonify(scores), 200
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)

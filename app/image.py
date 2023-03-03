@@ -5,27 +5,11 @@ from torchvision import transforms
 from PIL import Image
 import numpy as np
 
-idx_to_class = {
-    0: "Anger",
-    1: "Contempt",
-    2: "Disgust",
-    3: "Fear",
-    4: "Happiness",
-    5: "Neutral",
-    6: "Sadness",
-    7: "Surprise",
-}
-
-
-def array_to_dictionary(array):
-    dictionary = {}
-    for i in range(len(array)):
-        dictionary[idx_to_class[i]] = array[i]
-    return dictionary
-
+IMG_SIZE = 260
+MODEL_PATH = "app/models/affectnet_emotions/enet_b2_8.pt"
+CASCADE_PATH = "app/haar_cascade_face_detection.xml"
 
 def process_image(raw_img):
-    IMG_SIZE = 260
     test_transforms = transforms.Compose(
         [
             transforms.Resize((IMG_SIZE, IMG_SIZE)),
@@ -34,18 +18,16 @@ def process_image(raw_img):
         ]
     )
 
-    npimg = np.fromstring(raw_img, np.uint8)
-    image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
-    filename = "enet_b2_8"
+    image = cv2.imdecode(np.fromstring(raw_img, np.uint8), cv2.IMREAD_COLOR)
 
     model = torch.load(
-        "app/models/affectnet_emotions/" + filename + ".pt",
+        MODEL_PATH,
         map_location=torch.device("cpu"),
     )
     model.eval()
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    face_cascade = cv2.CascadeClassifier("app/haar_cascade_face_detection.xml")
+    face_cascade = cv2.CascadeClassifier(CASCADE_PATH)
     faces = face_cascade.detectMultiScale(gray, 1.1, 6)
 
     # Creating Rectangle around face
@@ -55,6 +37,5 @@ def process_image(raw_img):
         img_tensor.unsqueeze_(0)
         scores = model(img_tensor)
         scores = scores[0].data.numpy()
-        print(array_to_dictionary(scores))
 
     return scores
