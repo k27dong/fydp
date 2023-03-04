@@ -4,6 +4,8 @@ import styled from "styled-components"
 import Button from "@mui/material/Button"
 import LoadingButton from "@mui/lab/LoadingButton"
 import MemoryIcon from "@mui/icons-material/Memory"
+import PlayArrowIcon from "@mui/icons-material/PlayArrow"
+import PauseIcon from "@mui/icons-material/Pause"
 import {
   MODE_INVALID,
   MODE_IMAGE,
@@ -39,6 +41,8 @@ const ImagePreview = styled.img`
   margin-left: auto;
   margin-right: auto;
   display: block;
+  max-height: 100%;
+  max-width: 100%;
 `
 
 const OptionBox = styled(Box)`
@@ -50,10 +54,16 @@ const OptionBox = styled(Box)`
   margin-top: 1rem;
 `
 
+const VideoWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`
+
 const Body = ({ input, setResult }) => {
   const [selectedFile, setSelectedFile] = useState()
   const [preview, setPreview] = useState()
   const [loading, setLoading] = useState(false)
+  const [videoPaused, setVideoPaused] = useState(false)
 
   useEffect(() => {
     if (!selectedFile) {
@@ -97,7 +107,32 @@ const Body = ({ input, setResult }) => {
       ) : input === MODE_IMAGE ? (
         <>
           {!!selectedFile ? (
-            <ImagePreview src={preview} />
+            <>
+              <ImagePreview src={preview} />
+              <OptionBox>
+                <LoadingButton
+                  style={{ minWidth: "7rem", marginRight: "1rem" }}
+                  loading={false}
+                  onClick={() => {
+                    setSelectedFile(undefined)
+                    setResult([])
+                  }}
+                  variant="contained"
+                >
+                  Reset
+                </LoadingButton>
+                <LoadingButton
+                  style={{ minWidth: "7rem" }}
+                  loading={loading}
+                  onClick={(e) => get_image_result(e)}
+                  variant="contained"
+                  endIcon={<MemoryIcon />}
+                  loadingPosition="end"
+                >
+                  Apply
+                </LoadingButton>
+              </OptionBox>
+            </>
           ) : (
             <InputButton
               // variant="contained"
@@ -113,38 +148,37 @@ const Body = ({ input, setResult }) => {
             </InputButton>
           )}
         </>
-      ) : input === MODE_VIDEO ? (
-        <h1>TODO: input 2</h1>
       ) : input === MODE_LIVESTREAM ? (
+        <>
+          <VideoWrapper>
+            {videoPaused ? (
+              <EmptyInputHolder>Video Paused</EmptyInputHolder>
+            ) : (
+              <img
+                style={{ height: "100%", width: "100%" }}
+                src="http://localhost:5000/video_feed"
+                alt="Video"
+              />
+            )}
+          </VideoWrapper>
+          <Button
+            size="large"
+            variant="contained"
+            color={videoPaused ? "success" : "primary"}
+            endIcon={videoPaused ? <PlayArrowIcon /> : <PauseIcon />}
+            onClick={() => setVideoPaused(!videoPaused)}
+          >
+            {videoPaused ? "Play" : "Pause (TODO)"}
+          </Button>
+        </>
+      ) : input === MODE_VIDEO ? (
         <h1>TODO: input 3</h1>
       ) : (
         <h1>invalid input</h1>
       )}
-      {!!selectedFile && (
-        <OptionBox>
-          <LoadingButton
-            style={{ minWidth: "7rem", marginRight: "1rem" }}
-            loading={false}
-            onClick={() => {
-              setSelectedFile(undefined)
-              setResult([])
-            }}
-            variant="contained"
-          >
-            Reset
-          </LoadingButton>
-          <LoadingButton
-            style={{ minWidth: "7rem" }}
-            loading={loading}
-            onClick={(e) => get_image_result(e)}
-            variant="contained"
-            endIcon={<MemoryIcon />}
-            loadingPosition="end"
-          >
-            Apply
-          </LoadingButton>
-        </OptionBox>
-      )}
+      {/* {!!selectedFile && (
+
+      )} */}
     </BodyWrapper>
   )
 }
