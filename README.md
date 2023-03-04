@@ -5,6 +5,7 @@ Facial recognition and emotion detection application, powered by [Torch](https:/
 ## Start Locally
 
 ### Mac / Linux
+
 ```bash
 # Backend
 virtualenv --python=python3.9 venv
@@ -18,6 +19,7 @@ npm run start
 ```
 
 ### Windows
+
 ```bash
 # Backend
 python3.9 -m venv venv

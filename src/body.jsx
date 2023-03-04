@@ -134,9 +134,7 @@ const Body = ({ input, setResult }) => {
               </OptionBox>
             </>
           ) : (
-            <InputButton
-              component="label"
-            >
+            <InputButton component="label">
               Upload File
               <input
                 type="file"
