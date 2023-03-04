@@ -6,6 +6,7 @@ import LoadingButton from "@mui/lab/LoadingButton"
 import MemoryIcon from "@mui/icons-material/Memory"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import PauseIcon from "@mui/icons-material/Pause"
+import { Box } from "@mui/material"
 import {
   MODE_INVALID,
   MODE_IMAGE,
@@ -13,7 +14,6 @@ import {
   MODE_LIVESTREAM,
   API_URL,
 } from "./const"
-import { Box } from "@mui/material"
 
 const BodyWrapper = styled.div`
   width: 50%;
@@ -135,7 +135,6 @@ const Body = ({ input, setResult }) => {
             </>
           ) : (
             <InputButton
-              // variant="contained"
               component="label"
             >
               Upload File
@@ -176,9 +175,6 @@ const Body = ({ input, setResult }) => {
       ) : (
         <h1>invalid input</h1>
       )}
-      {/* {!!selectedFile && (
-
-      )} */}
     </BodyWrapper>
   )
 }
