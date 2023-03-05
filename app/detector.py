@@ -35,9 +35,12 @@ model = torch.load(
     map_location=torch.device("cpu"),
 ).eval()
 
+
 def process_image(raw_img):
     image = cv2.imdecode(np.fromstring(raw_img, np.uint8), cv2.IMREAD_COLOR)
-    faces = face_cascade.detectMultiScale(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), 1.1, 6)
+    faces = face_cascade.detectMultiScale(
+        cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), 1.1, 6
+    )
 
     # Creating Rectangle around face
     for x, y, w, h in faces:
@@ -51,6 +54,7 @@ def process_image(raw_img):
     scores = np.exp(scores) / np.sum(np.exp(scores), axis=0)
 
     return scores
+
 
 def process_livestream(frame):
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -74,8 +78,8 @@ def process_livestream(frame):
             cv2.LINE_AA,
         )
 
-    _, buffer = cv2.imencode('.jpg', frame)
-    processed_frame_str = base64.b64encode(buffer).decode('utf-8')
+    _, buffer = cv2.imencode(".jpg", frame)
+    processed_frame_str = base64.b64encode(buffer).decode("utf-8")
 
     return processed_frame_str
 

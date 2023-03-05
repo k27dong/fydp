@@ -29,26 +29,32 @@ def image():
 
     return scores, 200
 
-@socketio.on('connect')
+
+@socketio.on("connect")
 def test_connect():
-    print('Connected!')
+    print("Connected!")
 
-@socketio.on('disconnect')
+
+@socketio.on("disconnect")
 def test_disconnect():
-    print('Disconnected!')
+    print("Disconnected!")
 
-@socketio.on('start_stream')
+
+@socketio.on("start_stream")
 def start_stream():
     print("here")
     cap = capture_begin()
 
     while True:
         ret, frame = cap.read()
-        if not ret: break
+        if not ret:
+            break
 
         processed_frame = process_livestream(frame)
-        emit('processed_frame', processed_frame)
+        emit("processed_frame", processed_frame)
 
     cap.release()
+
+
 if __name__ == "__main__":
-    socketio.run(app, host='0.0.0.0' , debug=True)
+    socketio.run(app, host="0.0.0.0", debug=True)
