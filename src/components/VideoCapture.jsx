@@ -12,7 +12,7 @@ const VideoWrapper = styled.div`
   }
 `
 
-const VideoCapture = ({setResult}) => {
+const VideoCapture = ({ setResult }) => {
   const [frame, setFrame] = useState(null)
 
   useEffect(() => {
@@ -29,9 +29,9 @@ const VideoCapture = ({setResult}) => {
       img.src = `data:image/jpeg;base64,${processed_frame_str}`
     })
 
-    socket.on('processed_data', (data) => {
-        setResult(data.map((element) => Number((element * 100).toFixed(2))))
-    });
+    socket.on("processed_data", (data) => {
+      setResult(data.map((element) => Number((element * 100).toFixed(2))))
+    })
 
     // Start the video stream
     socket.emit("start_stream")

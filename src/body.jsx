@@ -99,7 +99,7 @@ const Body = ({ input, setResult }) => {
           )}
         </>
       ) : input === MODE_LIVESTREAM ? (
-        <VideoCapture setResult={setResult}/>
+        <VideoCapture setResult={setResult} />
       ) : input === MODE_VIDEO ? (
         <h1>TODO: input 3</h1>
       ) : (
