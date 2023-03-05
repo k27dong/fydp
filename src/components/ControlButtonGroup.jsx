@@ -12,29 +12,29 @@ const OptionBox = styled(Box)`
   margin-top: 1rem;
 `
 
-const ControlButtonGroup = ({ loading, click1, click2  }) => {
-    return (
-        <OptionBox>
-        <LoadingButton
-          style={{ minWidth: "7rem", marginRight: "1rem" }}
-          loading={false}
-          onClick={() => click1()}
-          variant="contained"
-        >
-          Reset
-        </LoadingButton>
-        <LoadingButton
-          style={{ minWidth: "7rem" }}
-          loading={loading}
-          onClick={(e) => click2(e)}
-          variant="contained"
-          endIcon={<MemoryIcon />}
-          loadingPosition="end"
-        >
-          Apply
-        </LoadingButton>
-      </OptionBox>
-    )
+const ControlButtonGroup = ({ loading, click1, click2 }) => {
+  return (
+    <OptionBox>
+      <LoadingButton
+        style={{ minWidth: "7rem", marginRight: "1rem" }}
+        loading={false}
+        onClick={() => click1()}
+        variant="contained"
+      >
+        Reset
+      </LoadingButton>
+      <LoadingButton
+        style={{ minWidth: "7rem" }}
+        loading={loading}
+        onClick={(e) => click2(e)}
+        variant="contained"
+        endIcon={<MemoryIcon />}
+        loadingPosition="end"
+      >
+        Apply
+      </LoadingButton>
+    </OptionBox>
+  )
 }
 
 export default ControlButtonGroup

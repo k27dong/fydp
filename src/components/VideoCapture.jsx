@@ -3,15 +3,14 @@ import io from "socket.io-client"
 import styled from "styled-components"
 
 const VideoWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+
+  img {
     width: 100%;
     height: 100%;
-
-    img {
-        width: 100%;
-        height: 100%;
-    }
+  }
 `
-
 
 const VideoCapture = () => {
   const [frame, setFrame] = useState(null)
@@ -39,7 +38,11 @@ const VideoCapture = () => {
     }
   }, [])
 
-  return <VideoWrapper>{frame && <img src={frame.src} alt={"Video Capture"}  />}</VideoWrapper>
+  return (
+    <VideoWrapper>
+      {frame && <img src={frame.src} alt={"Video Capture"} />}
+    </VideoWrapper>
+  )
 }
 
 export default VideoCapture

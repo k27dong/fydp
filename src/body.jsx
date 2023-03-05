@@ -40,7 +40,6 @@ const ImagePreview = styled.img`
   max-width: 100%;
 `
 
-
 const VideoWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -109,7 +108,7 @@ const Body = ({ input, setResult }) => {
           )}
         </>
       ) : input === MODE_LIVESTREAM ? (
-          <VideoCapture/>
+        <VideoCapture />
       ) : input === MODE_VIDEO ? (
         <h1>TODO: input 3</h1>
       ) : (
