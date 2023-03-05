@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import styled from "styled-components"
-import Button from "@mui/material/Button"
-import PlayArrowIcon from "@mui/icons-material/PlayArrow"
-import PauseIcon from "@mui/icons-material/Pause"
 import {
   MODE_INVALID,
   MODE_IMAGE,
@@ -40,16 +37,10 @@ const ImagePreview = styled.img`
   max-width: 100%;
 `
 
-const VideoWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-`
-
 const Body = ({ input, setResult }) => {
   const [selectedFile, setSelectedFile] = useState()
   const [preview, setPreview] = useState()
   const [loading, setLoading] = useState(false)
-  const [videoPaused, setVideoPaused] = useState(false)
 
   useEffect(() => {
     if (!selectedFile) {
@@ -108,7 +99,7 @@ const Body = ({ input, setResult }) => {
           )}
         </>
       ) : input === MODE_LIVESTREAM ? (
-        <VideoCapture />
+        <VideoCapture setResult={setResult}/>
       ) : input === MODE_VIDEO ? (
         <h1>TODO: input 3</h1>
       ) : (

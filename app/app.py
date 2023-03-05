@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from detector import process_image, process_livestream, capture_begin
+from detector import process_image, process_livestream, capture_begin, process_base64_image
 from flask_socketio import SocketIO, emit
+import numpy as np
 
 app = Flask(
     __name__, static_folder="../build", static_url_path="", template_folder="../build"
@@ -51,6 +52,10 @@ def start_stream():
             break
 
         processed_frame = process_livestream(frame)
+        emotion_scores = process_base64_image(frame)
+
+        # Emit the processed data to the client over the WebSocket connection
+        emit('processed_data', [float(x) for x in emotion_scores])
         emit("processed_frame", processed_frame)
 
     cap.release()
