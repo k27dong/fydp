@@ -35,6 +35,7 @@ model = torch.load(
     map_location=torch.device("cpu"),
 ).eval()
 
+
 def process_base64_image(image):
     gray_frame = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray_frame, 1.1, 6)
@@ -52,6 +53,7 @@ def process_base64_image(image):
     scores = np.exp(scores) / np.sum(np.exp(scores), axis=0)
 
     return scores
+
 
 def process_image(raw_img):
     image = cv2.imdecode(np.fromstring(raw_img, np.uint8), cv2.IMREAD_COLOR)
