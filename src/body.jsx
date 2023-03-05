@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import styled from "styled-components"
 import Button from "@mui/material/Button"
-import LoadingButton from "@mui/lab/LoadingButton"
-import MemoryIcon from "@mui/icons-material/Memory"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import PauseIcon from "@mui/icons-material/Pause"
-import { Box } from "@mui/material"
 import {
   MODE_INVALID,
   MODE_IMAGE,
@@ -14,16 +11,14 @@ import {
   MODE_LIVESTREAM,
   API_URL,
 } from "./const"
+import Upload from "./components/Upload"
+import ControlButtonGroup from "./components/ControlButtonGroup"
+import VideoCapture from "./components/VideoCapture"
 
 const BodyWrapper = styled.div`
   width: 50%;
   height: 50%;
   margin-top: 2rem;
-`
-
-const InputButton = styled(Button)`
-  width: 100%;
-  height: 100%;
 `
 
 const EmptyInputHolder = styled.div`
@@ -45,14 +40,6 @@ const ImagePreview = styled.img`
   max-width: 100%;
 `
 
-const OptionBox = styled(Box)`
-  text-align: center;
-  display: "flex";
-  flex-direction: "column";
-  align-items: "center";
-  justify-content: "center";
-  margin-top: 1rem;
-`
 
 const VideoWrapper = styled.div`
   width: 100%;
@@ -93,7 +80,6 @@ const Body = ({ input, setResult }) => {
       .then((res) => {
         setLoading(false)
         setResult(res.data.map((element) => Number((element * 100).toFixed(2))))
-        console.log(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -109,65 +95,21 @@ const Body = ({ input, setResult }) => {
           {!!selectedFile ? (
             <>
               <ImagePreview src={preview} />
-              <OptionBox>
-                <LoadingButton
-                  style={{ minWidth: "7rem", marginRight: "1rem" }}
-                  loading={false}
-                  onClick={() => {
-                    setSelectedFile(undefined)
-                    setResult([])
-                  }}
-                  variant="contained"
-                >
-                  Reset
-                </LoadingButton>
-                <LoadingButton
-                  style={{ minWidth: "7rem" }}
-                  loading={loading}
-                  onClick={(e) => get_image_result(e)}
-                  variant="contained"
-                  endIcon={<MemoryIcon />}
-                  loadingPosition="end"
-                >
-                  Apply
-                </LoadingButton>
-              </OptionBox>
+              <ControlButtonGroup
+                loading={loading}
+                click1={() => {
+                  setSelectedFile(undefined)
+                  setResult([])
+                }}
+                click2={(e) => get_image_result(e)}
+              />
             </>
           ) : (
-            <InputButton component="label">
-              Upload File
-              <input
-                type="file"
-                accept="image/gif,image/jpeg,image/jpg,image/png"
-                onChange={onSelectFile}
-                hidden
-              />
-            </InputButton>
+            <Upload onSelectFile={onSelectFile} />
           )}
         </>
       ) : input === MODE_LIVESTREAM ? (
-        <>
-          <VideoWrapper>
-            {videoPaused ? (
-              <EmptyInputHolder>Video Paused</EmptyInputHolder>
-            ) : (
-              <img
-                style={{ height: "100%", width: "100%" }}
-                src="http://localhost:5000/video_feed"
-                alt="Video"
-              />
-            )}
-          </VideoWrapper>
-          <Button
-            size="large"
-            variant="contained"
-            color={videoPaused ? "success" : "primary"}
-            endIcon={videoPaused ? <PlayArrowIcon /> : <PauseIcon />}
-            onClick={() => setVideoPaused(!videoPaused)}
-          >
-            {videoPaused ? "Play" : "Pause (TODO)"}
-          </Button>
-        </>
+          <VideoCapture/>
       ) : input === MODE_VIDEO ? (
         <h1>TODO: input 3</h1>
       ) : (

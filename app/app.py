@@ -1,23 +1,14 @@
-from flask import Flask, request, jsonify, send_from_directory, Response
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from detector import process_image, VideoCamera
+from detector import process_image, process_livestream, capture_begin
+from flask_socketio import SocketIO, emit
 
 app = Flask(
     __name__, static_folder="../build", static_url_path="", template_folder="../build"
 )
 
 CORS(app)
-
-EMOTION_INDEX = {
-    0: "Anger",
-    1: "Contempt",
-    2: "Disgust",
-    3: "Fear",
-    4: "Happiness",
-    5: "Neutral",
-    6: "Sadness",
-    7: "Surprise",
-}
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.route("/")
@@ -30,38 +21,34 @@ def not_found():
     return send_from_directory(app.static_folder, "index.html")
 
 
-@app.route("/health")
-def health():
-    return jsonify({"status": "ok"}), 200
-
-
-@app.route("/ready")
-def ready():
-    return jsonify({"status": "ok"}), 200
-
-
 @app.route("/api/image", methods=["POST"])
 def image():
     raw_img = request.files["image"].read()
     emotion_scores = process_image(raw_img)
-    # scores = {EMOTION_INDEX[i]: float(emotion_scores[i]) for i in range(len(emotion_scores))}
     scores = [float(x) for x in emotion_scores]
 
     return scores, 200
 
+@socketio.on('connect')
+def test_connect():
+    print('Connected!')
 
-def gen(camera):
+@socketio.on('disconnect')
+def test_disconnect():
+    print('Disconnected!')
+
+@socketio.on('start_stream')
+def start_stream():
+    print("here")
+    cap = capture_begin()
+
     while True:
-        frame = camera.get_frame()
-        yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n\r\n")
+        ret, frame = cap.read()
+        if not ret: break
 
+        processed_frame = process_livestream(frame)
+        emit('processed_frame', processed_frame)
 
-@app.route("/video_feed")
-def video_feed():
-    return Response(
-        gen(VideoCamera()), mimetype="multipart/x-mixed-replace; boundary=frame"
-    )
-
-
+    cap.release()
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", threaded=True, debug=True)
+    socketio.run(app, host='0.0.0.0' , debug=True)
