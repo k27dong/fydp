@@ -1,31 +1,39 @@
 import React, { useState, useEffect } from "react"
 import io from "socket.io-client"
 import styled from "styled-components"
+import { API_URL } from "../const"
+import { Button } from "@mui/material"
 
 const VideoWrapper = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+`
 
-  img {
-    width: 100%;
-    height: 100%;
-  }
+const Video = styled.img`
+  width: 100%;
+  height: 100%;
+`
+
+const PlayPauseButton = styled(Button)`
+  margin: 0.5rem auto 0 !important;
 `
 
 const VideoCapture = ({ setResult }) => {
   const [frame, setFrame] = useState(null)
+  const [playing, setPlaying] = useState(true)
+
+  const togglePlaying = () => {
+    setPlaying(!playing)
+  }
 
   useEffect(() => {
-    // Connect to the Flask server over a WebSocket connection
-    const socket = io("http://localhost:5000")
+    const socket = io(API_URL)
 
-    // Listen for processed frames from the server
     socket.on("processed_frame", (processed_frame_str) => {
-      // Convert the base64 encoded string to an image
       const img = new Image()
-      img.onload = () => {
-        setFrame(img)
-      }
+      img.onload = () => setFrame(img)
       img.src = `data:image/jpeg;base64,${processed_frame_str}`
     })
 
@@ -33,18 +41,17 @@ const VideoCapture = ({ setResult }) => {
       setResult(data.map((element) => Number((element * 100).toFixed(2))))
     })
 
-    // Start the video stream
     socket.emit("start_stream")
 
-    // Disconnect from the server when the component unmounts
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
+    return () => socket.disconnect()
+  }, [setResult])
 
   return (
     <VideoWrapper>
-      {frame && <img src={frame.src} alt={"Video Capture"} />}
+      {frame && <Video src={frame.src} alt={"Video Capture"} />}
+      <PlayPauseButton variant="contained" onClick={togglePlaying}>
+        {playing ? "Pause" : "Play"}
+      </PlayPauseButton>
     </VideoWrapper>
   )
 }

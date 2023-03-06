@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import styled from "styled-components"
+import Upload from "./components/Upload"
+import ControlButtonGroup from "./components/ControlButtonGroup"
+import VideoCapture from "./components/VideoCapture"
 import {
   MODE_INVALID,
   MODE_IMAGE,
@@ -8,9 +11,6 @@ import {
   MODE_LIVESTREAM,
   API_URL,
 } from "./const"
-import Upload from "./components/Upload"
-import ControlButtonGroup from "./components/ControlButtonGroup"
-import VideoCapture from "./components/VideoCapture"
 
 const BodyWrapper = styled.div`
   width: 50%;
