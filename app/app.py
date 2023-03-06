@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, send_from_directory
 from flask_cors import CORS
 from detector import (
     process_image,
