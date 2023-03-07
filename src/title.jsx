@@ -66,7 +66,7 @@ const Title = ({ input, setInput }) => {
               }}
             >
               <MenuItem value={MODE_IMAGE}>Image</MenuItem>
-              <MenuItem value={MODE_VIDEO}>Video</MenuItem>
+              {/* <MenuItem value={MODE_VIDEO}>Video</MenuItem> */}
               <MenuItem value={MODE_LIVESTREAM}>Live Stream</MenuItem>
             </Select>
           </FormControl>
