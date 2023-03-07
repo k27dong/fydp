@@ -23,6 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "heroku-postbuild": "npm run build",
+    "postinstall": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
