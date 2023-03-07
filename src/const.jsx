@@ -7,7 +7,7 @@ export const DEFAULT_SHADOW =
 
 // export const API_URL = "http://localhost:5000"
 export const GITHUB_URL = "https://github.com/k27dong/fydp"
-export const API_URL = "https://k27dong-website.herokuapp.com/"
+export const API_URL = "https://k27dong-website.herokuapp.com"
 
 export const EMOTION_MAP = [
   "Anger",
