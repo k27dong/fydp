@@ -1,13 +1,12 @@
 from flask import Flask, request, send_from_directory
 from flask_cors import CORS
+from flask_socketio import SocketIO, emit
 from detector import (
     process_image,
     process_livestream,
     capture_begin,
     process_base64_image,
 )
-from flask_socketio import SocketIO, emit
-import numpy as np
 
 app = Flask(
     __name__, static_folder="../build", static_url_path="", template_folder="../build"
