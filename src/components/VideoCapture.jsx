@@ -29,7 +29,7 @@ const VideoCapture = ({ setResult }) => {
   }
 
   useEffect(() => {
-    const socket = io(API_URL, { withCredentials: true });
+    const socket = io(API_URL, { withCredentials: true })
 
     socket.on("processed_frame", (processed_frame_str) => {
       const img = new Image()
