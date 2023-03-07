@@ -20,9 +20,11 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 def serve():
     return send_from_directory(app.static_folder, "index.html")
 
+
 @app.route("/health")
 def health():
     return "OK", 200
+
 
 @app.errorhandler(404)
 def not_found():
