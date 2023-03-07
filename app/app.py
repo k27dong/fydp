@@ -12,7 +12,7 @@ app = Flask(
     __name__, static_folder="../build", static_url_path="", template_folder="../build"
 )
 
-app.config['CORS_HEADERS'] = 'Content-Type'
+app.config["CORS_HEADERS"] = "Content-Type"
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 socketio = SocketIO(app, cors_allowed_origins="*")
