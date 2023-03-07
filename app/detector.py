@@ -60,6 +60,7 @@ def process_image(raw_img):
     faces = face_cascade.detectMultiScale(
         cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), 1.1, 6
     )
+    scores = None
 
     # Creating Rectangle around face
     for x, y, w, h in faces:
@@ -70,7 +71,7 @@ def process_image(raw_img):
         scores = scores[0].data.numpy()
 
     # softmax
-    scores = np.exp(scores) / np.sum(np.exp(scores), axis=0)
+    scores = [0] * len(EMOTION_INDEX) if scores is None else np.exp(scores) / np.sum(np.exp(scores), axis=0)
 
     return scores
 
