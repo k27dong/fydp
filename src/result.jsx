@@ -30,6 +30,7 @@ const EmotionItem = styled.div`
 
 const EmotionName = styled.div`
   font-size: 1.3rem;
+  font-weight: bold;
   padding-bottom: 0.5rem;
   width: 85%;
   box-shadow: inset 0 -2px 0px 0px #ff7d66;
@@ -43,12 +44,24 @@ const EmotionWeight = styled.div`
 `
 
 const Result = ({ input, result }) => {
+  function map_result_to_hex(h) {
+    const f = (n) => {
+      const k = (n + (h + 40) / 30) % 12
+      return Math.round(
+        255 * (0.4 - 0.36 * Math.max(Math.min(k - 3, 9 - k, 1), -1))
+      )
+        .toString(16)
+        .padStart(2, "0")
+    }
+    return `#${f(0)}${f(8)}${f(4)}`
+  }
+
   return (
     <ResultWrapper>
       {EMOTION_MAP.map((emotion, index) => {
         return (
           <EmotionItem key={index}>
-            <EmotionName>
+            <EmotionName style={{ color: map_result_to_hex(result[index]) }}>
               {result.length === 0 ? "" : `${result[index]}%`}
             </EmotionName>
             <EmotionWeight>{emotion}</EmotionWeight>
