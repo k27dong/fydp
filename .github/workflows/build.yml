@@ -1,0 +1,49 @@
+name: Build production
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-production:
+    name: Creates the production build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.13.2
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Rebuild the build/ directory
+        run: npm run build
+
+      - name: Compare the expected and actual build/ directories
+        run: |
+          if [ "$(git diff --ignore-space-at-eol build/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build.  See status below:"
+            git diff
+            exit 1
+          fi
+        id: diff
+
+      - name: Commit changes
+        run: |
+          timestamp=$(date +'%Y%m%d%H%M%S')
+          git add build
+          git commit -m "update build folder - $timestamp"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          branch: main
