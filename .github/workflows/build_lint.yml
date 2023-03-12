@@ -40,7 +40,7 @@ jobs:
 
   run-linters:
     name: Auto Formatter
-    needs: Auto Builder
+    needs: build-production
     runs-on: ubuntu-latest
 
     steps:
