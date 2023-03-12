@@ -28,6 +28,11 @@ jobs:
       - name: Rebuild the build/ directory
         run: npm run build
 
+      - name: Configure Git
+        run: |
+          git config --global user.email "john@doe.com"
+          git config --global user.name "NPM Builder"
+
       - name: Commit changes
         run: |
           timestamp=$(date +'%Y%m%d%H%M%S')
