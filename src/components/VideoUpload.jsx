@@ -10,12 +10,7 @@ const VideoUpload = ({ onSelectFile }) => {
   return (
     <InputButton component="label">
       Upload Video
-      <input
-        type="file"
-        accept="video/*"
-        onChange={onSelectFile}
-        hidden
-      />
+      <input type="file" accept="video/*" onChange={onSelectFile} hidden />
     </InputButton>
   )
 }
