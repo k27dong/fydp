@@ -133,12 +133,17 @@ const Body = ({ input, setResult }) => {
           {!!selectedFile ? (
             <>
               <VideoPreview src={preview} controls />
-              <ControlButtonGroup loading={loading} click1={() => {
+              <ControlButtonGroup
+                loading={loading}
+                click1={() => {
                   setSelectedFile(undefined)
-                  setResult([]) }} click2={(e) => get_video_result(e)}
+                  setResult([])
+                }}
+                click2={(e) => get_video_result(e)}
               />
             </>
-          ) : ( <VideoUpload onSelectFile={onSelectFile} />
+          ) : (
+            <VideoUpload onSelectFile={onSelectFile} />
           )}
         </>
       ) : (
