@@ -28,7 +28,7 @@ jobs:
 
       - name: Check if there is any new translations
         id: verify_diff
-        run: git diff --quiet build || echo "::set-output name=new_build_exist::true"
+        run: git diff --quiet build || echo "{new_build_exist}={true}" >> $GITHUB_OUTPUT
 
       - name: Commit changes
         if: steps.verify_diff.outputs.new_build_exist == 'true'
