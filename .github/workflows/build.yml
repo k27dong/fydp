@@ -44,3 +44,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
+
+      - name: Trigger Second Workflow
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          workflow: 'lint.yml'
