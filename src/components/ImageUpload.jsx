@@ -6,7 +6,7 @@ const InputButton = styled(Button)`
   height: 100%;
 `
 
-const Upload = ({ onSelectFile }) => {
+const ImageUpload = ({ onSelectFile }) => {
   return (
     <InputButton component="label">
       Upload File
@@ -20,4 +20,4 @@ const Upload = ({ onSelectFile }) => {
   )
 }
 
-export default Upload
+export default ImageUpload

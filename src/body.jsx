@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import styled from "styled-components"
-import Upload from "./components/Upload"
+import ImageUpload from "./components/ImageUpload"
 import ControlButtonGroup from "./components/ControlButtonGroup"
 import VideoCapture from "./components/VideoCapture"
+import VideoUpload from "./components/VideoUpload"
 import {
   MODE_INVALID,
   MODE_IMAGE,
@@ -29,6 +30,15 @@ const EmptyInputHolder = styled.div`
 `
 
 const ImagePreview = styled.img`
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  max-height: 100%;
+  max-width: 100%;
+`
+
+const VideoPreview = styled.video`
   height: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -72,6 +82,24 @@ const Body = ({ input, setResult }) => {
         setResult(res.data.map((element) => Number((element * 100).toFixed(2))))
       })
       .catch((err) => {
+        setLoading(false)
+        console.log(err)
+      })
+  }
+
+  const get_video_result = (e) => {
+    setLoading(true)
+    e.preventDefault()
+    const form_data = new FormData()
+    form_data.append("video", selectedFile)
+    axios
+      .post(API_URL + "/api/video", form_data)
+      .then((res) => {
+        setLoading(false)
+        setResult(res.data.map((element) => Number((element * 100).toFixed(2))))
+      })
+      .catch((err) => {
+        setLoading(false)
         console.log(err)
       })
   }
@@ -95,13 +123,29 @@ const Body = ({ input, setResult }) => {
               />
             </>
           ) : (
-            <Upload onSelectFile={onSelectFile} />
+            <ImageUpload onSelectFile={onSelectFile} />
           )}
         </>
       ) : input === MODE_LIVESTREAM ? (
         <VideoCapture setResult={setResult} />
       ) : input === MODE_VIDEO ? (
-        <h1>TODO: input 3</h1>
+        <>
+          {!!selectedFile ? (
+            <>
+              <VideoPreview src={preview} controls />
+              <ControlButtonGroup
+                loading={loading}
+                click1={() => {
+                  setSelectedFile(undefined)
+                  setResult([])
+                }}
+                click2={(e) => get_video_result(e)}
+              />
+            </>
+          ) : (
+            <VideoUpload onSelectFile={onSelectFile} />
+          )}
+        </>
       ) : (
         <h1>invalid input</h1>
       )}
