@@ -26,7 +26,12 @@ jobs:
           git config --global user.email "me@kefan.me"
           git config --global user.name "Kevin Dong"
 
+      - name: Check if there is any new translations
+        id: verify_diff
+        run: git diff --quiet build || echo "::set-output name=new_build_exist::true"
+
       - name: Commit changes
+        if: steps.verify_diff.outputs.new_build_exist == 'true'
         run: |
           timestamp=$(date +'%Y%m%d%H%M%S')
           git add build
