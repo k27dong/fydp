@@ -82,6 +82,7 @@ def process_image(raw_img):
 
     return scores
 
+
 def process_video(raw_video):
     total_scores = [0] * len(EMOTION_INDEX)
 
@@ -120,6 +121,7 @@ def process_video(raw_video):
     )
 
     return total_scores
+
 
 def process_livestream(frame):
     # TODO: this is commented out for performance reasons

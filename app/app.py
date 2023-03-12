@@ -42,6 +42,7 @@ def image():
 
     return scores, 200
 
+
 @app.route("/api/video", methods=["POST"])
 def video():
     raw_video = request.files["video"]
