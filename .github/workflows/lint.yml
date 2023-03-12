@@ -1,12 +1,9 @@
 name: Lint
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+workflow_run:
+  workflows: [Build production]
+  types:
+    - completed
 
 jobs:
   run-linters:
