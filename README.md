@@ -1,6 +1,6 @@
 # FYDP
 
-Facial recognition and emotion detection application, powered by [Torch](https://pytorch.org/), [OpenCV](https://opencv.org/), [Flask](https://flask.palletsprojects.com/en/2.2.x/), and [React](https://reactjs.org/). This project was created for the UWaterloo Faculty of Engineering's 2023 Final Year Design Project.
+Facial recognition and emotion detection application, powered by [Torch](https://pytorch.org/), [OpenCV](https://opencv.org/), [Flask](https://flask.palletsprojects.com/en/2.2.x/), and [React](https://reactjs.org/) with [Vite](https://vitejs.dev/). This project was created for the UWaterloo Faculty of Engineering's 2023 Final Year Design Project.
 
 ## Start Locally
 
@@ -31,3 +31,16 @@ python app/app.py
 npm i
 npm run start
 ```
+
+## Authors
+
+- **Kevin Dong** - [k27dong](https://github.com/k27dong)
+- **Harry Hu** - [harryhu009](https://github.com/harryhu009)
+- **Shurui Cui** - [Kenonder](https://github.com/Kenonder)
+- **Laura Liu** - [laural1u](https://github.com/laural1u)
+- **Edward Li** - [LuKuuu](https://github.com/LuKuuu)
+- **Lorenzo Wang** - [TheJackdaww](https://github.com/TheJackdaww)
+
+## License
+
+MIT
