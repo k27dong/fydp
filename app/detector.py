@@ -2,6 +2,8 @@ import base64
 import numpy as np
 import cv2
 import torch
+import os
+from werkzeug.datastructures import FileStorage
 from torch.utils.mobile_optimizer import optimize_for_mobile
 from torchvision import transforms
 from PIL import Image
@@ -9,6 +11,7 @@ from PIL import Image
 IMG_SIZE = 260
 MODEL_PATH = "app/models/affectnet_emotions/enet_b2_8.pt"
 CASCADE_PATH = "app/haar_cascade_face_detection.xml"
+TEMP_VIDEO_STORAGE = "tmp"
 EMOTION_INDEX = {
     0: "Anger",
     1: "Contempt",
@@ -79,30 +82,67 @@ def process_image(raw_img):
 
     return scores
 
+def process_video(raw_video):
+    total_scores = [0] * len(EMOTION_INDEX)
+
+    os.makedirs(TEMP_VIDEO_STORAGE, exist_ok=True)
+    file_path = os.path.join(TEMP_VIDEO_STORAGE, raw_video.filename)
+    raw_video.save(file_path)
+    cap = cv2.VideoCapture(file_path)
+
+    while True:
+        ret, frame = cap.read()
+
+        if not ret:
+            break
+
+        faces = face_cascade.detectMultiScale(
+            cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), 1.1, 6
+        )
+
+        for x, y, w, h in faces:
+            face_img = frame[y : y + h, x : x + w]
+            img_tensor = transform(Image.fromarray(face_img))
+            img_tensor.unsqueeze_(0)
+            scores = model(img_tensor)
+            scores = scores[0].data.numpy()
+
+        total_scores = [scores[i] + total_scores[i] for i in range(len(scores))]
+
+    cap.release()
+    os.remove(file_path)
+
+    # softmax
+    total_scores = (
+        [0] * len(EMOTION_INDEX)
+        if total_scores is None
+        else np.exp(total_scores) / np.sum(np.exp(total_scores), axis=0)
+    )
+
+    return total_scores
 
 def process_livestream(frame):
     # TODO: this is commented out for performance reasons
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray_frame, 1.1, 6)
 
-    # gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # faces = face_cascade.detectMultiScale(gray_frame, 1.1, 6)
-
-    # for x, y, w, h in faces:
-    #     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 250), 2)
-    #     face_img = frame[y : y + h, x : x + w]
-    #     img_tensor = transform(Image.fromarray(face_img))
-    #     img_tensor.unsqueeze_(0)
-    #     scores = model(img_tensor)
-    #     scores = scores[0].data.numpy()
-    #     cv2.putText(
-    #         frame,
-    #         EMOTION_INDEX[np.argmax(scores)],
-    #         (x + 10, y + 15),
-    #         cv2.FONT_HERSHEY_SIMPLEX,
-    #         0.5,
-    #         (255, 255, 255),
-    #         2,
-    #         cv2.LINE_AA,
-    #     )
+    for x, y, w, h in faces:
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 250), 2)
+        face_img = frame[y : y + h, x : x + w]
+        img_tensor = transform(Image.fromarray(face_img))
+        img_tensor.unsqueeze_(0)
+        scores = model(img_tensor)
+        scores = scores[0].data.numpy()
+        cv2.putText(
+            frame,
+            EMOTION_INDEX[np.argmax(scores)],
+            (x + 10, y + 15),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5,
+            (255, 255, 255),
+            2,
+            cv2.LINE_AA,
+        )
 
     _, buffer = cv2.imencode(".jpg", frame)
     processed_frame_str = base64.b64encode(buffer).decode("utf-8")

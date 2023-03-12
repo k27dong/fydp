@@ -1,8 +1,9 @@
 from flask import Flask, request, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
-from app.detector import (
+from detector import (
     process_image,
+    process_video,
     process_livestream,
     capture_begin,
     process_base64_image,
@@ -41,6 +42,14 @@ def image():
 
     return scores, 200
 
+@app.route("/api/video", methods=["POST"])
+def video():
+    raw_video = request.files["video"]
+    emotion_scores = process_video(raw_video)
+    scores = [float(x) for x in emotion_scores]
+
+    return scores, 200
+
 
 @socketio.on("connect")
 def test_connect():
@@ -54,7 +63,6 @@ def test_disconnect():
 
 @socketio.on("start_stream")
 def start_stream():
-    print("here")
     cap = capture_begin()
 
     while True:
@@ -73,4 +81,4 @@ def start_stream():
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0")
+    socketio.run(app, host="0.0.0.0", debug=True)
