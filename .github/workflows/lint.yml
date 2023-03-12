@@ -1,9 +1,11 @@
 name: Lint
 
-workflow_run:
-  workflows: [Build production]
-  types:
-    - completed
+on:
+  workflow_run:
+    workflows:
+      - 'Build production'
+    branches:
+      - main
 
 jobs:
   run-linters:
