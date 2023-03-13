@@ -31,7 +31,7 @@ jobs:
         run: git diff --quiet build || echo "{new_build_exist}={true}" >> $GITHUB_OUTPUT
 
       - name: Commit changes
-        if: steps.verify_diff.outputs.new_build_exist == 'true'
+        if: steps.verify_diff.outputs.new_build_exist == true
         run: |
           timestamp=$(date +'%Y%m%d%H%M%S')
           git add build
