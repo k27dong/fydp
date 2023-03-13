@@ -3,8 +3,6 @@ import numpy as np
 import cv2
 import torch
 import os
-from werkzeug.datastructures import FileStorage
-from torch.utils.mobile_optimizer import optimize_for_mobile
 from torchvision import transforms
 from PIL import Image
 

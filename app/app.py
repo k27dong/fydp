@@ -1,7 +1,7 @@
 from flask import Flask, request, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
-from detector import (
+from app.detector import (
     process_image,
     process_video,
     process_livestream,
