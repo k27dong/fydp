@@ -16,6 +16,7 @@ const AppContainer = styled.div`
 
   @media ${device.tablet} {
     height: auto;
+    min-height: 100vh;
   }
 `
 
