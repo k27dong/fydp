@@ -11,7 +11,7 @@ import {
   MODE_VIDEO,
   MODE_LIVESTREAM,
   API_URL,
-  device
+  device,
 } from "./const"
 
 const BodyWrapper = styled.div`
@@ -19,14 +19,14 @@ const BodyWrapper = styled.div`
   height: 50%;
   margin-top: 2rem;
 
-    @media ${device.tablet} {
-        display: flex;
+  @media ${device.tablet} {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     height: 30%;
     width: 100%;
     margin-top: 4rem;
-    }
+  }
 `
 
 const EmptyInputHolder = styled.div`
@@ -38,9 +38,10 @@ const EmptyInputHolder = styled.div`
   top: 50%;
   position: relative;
 
-    @media ${device.tablet} {
-        width: 50%;
-        place-self: center;}
+  @media ${device.tablet} {
+    width: 50%;
+    place-self: center;
+  }
 `
 
 const ImagePreview = styled.img`
@@ -51,9 +52,9 @@ const ImagePreview = styled.img`
   max-height: 100%;
   max-width: 100%;
 
-    @media ${device.tablet} {
-        height: auto;
-    }
+  @media ${device.tablet} {
+    height: auto;
+  }
 `
 
 const VideoPreview = styled.video`

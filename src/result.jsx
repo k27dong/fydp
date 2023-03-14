@@ -86,33 +86,33 @@ const Result = ({ input, result }) => {
 
   return (
     <ResultWrapper>
-      {!isMobile
-        ? EMOTION_MAP.map((emotion, index) => {
-            return (
-              <EmotionItem key={index}>
-                <EmotionName
-                  style={{ color: map_result_to_hex(result[index]) }}
-                >
-                  {!hasResult ? "" : `${result[index]}%`}
-                </EmotionName>
-                <EmotionWeight>{emotion}</EmotionWeight>
-              </EmotionItem>
-            )
-          })
-        : !hasResult
-        ? <h2>{""}</h2>
-        : EMOTION_MAP.map((emotion, index) => {
-            return (
-              <EmotionTableMobile key={index}>
-                <EmotionRowMobile>{emotion}</EmotionRowMobile>
-                <EmotionRowMobile
-                  style={{ color: map_result_to_hex(result[index]) }}
-                >
-                  {`${result[index]}%`}
-                </EmotionRowMobile>
-              </EmotionTableMobile>
-            )
-          })}
+      {!isMobile ? (
+        EMOTION_MAP.map((emotion, index) => {
+          return (
+            <EmotionItem key={index}>
+              <EmotionName style={{ color: map_result_to_hex(result[index]) }}>
+                {!hasResult ? "" : `${result[index]}%`}
+              </EmotionName>
+              <EmotionWeight>{emotion}</EmotionWeight>
+            </EmotionItem>
+          )
+        })
+      ) : !hasResult ? (
+        <h2>{""}</h2>
+      ) : (
+        EMOTION_MAP.map((emotion, index) => {
+          return (
+            <EmotionTableMobile key={index}>
+              <EmotionRowMobile>{emotion}</EmotionRowMobile>
+              <EmotionRowMobile
+                style={{ color: map_result_to_hex(result[index]) }}
+              >
+                {`${result[index]}%`}
+              </EmotionRowMobile>
+            </EmotionTableMobile>
+          )
+        })
+      )}
     </ResultWrapper>
   )
 }

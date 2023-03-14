@@ -10,7 +10,7 @@ import {
   MODE_VIDEO,
   MODE_LIVESTREAM,
   DEFAULT_SHADOW,
-  device
+  device,
 } from "./const"
 
 const TitleContainer = styled.div`
@@ -52,9 +52,9 @@ const TitleWrapper = styled.div`
   margin-bottom: auto;
   height: 100%;
   display: flex;
-align-items: center;
+  align-items: center;
 
-@media ${device.tablet} {
+  @media ${device.tablet} {
     padding: 0 1rem;
   }
 `
@@ -71,27 +71,27 @@ const Title = ({ input, setInput }) => {
           <Name>F Y D P</Name>
         </a>
       </TitleWrapper>
-        <DropdownWrapper>
-          <FormControl fullWidth>
-            <InputLabel>Input Method</InputLabel>
-            <Select
-              value={input}
-              label="Input Method"
-              onChange={handle_change}
-              sx={{
-                boxShadow: DEFAULT_SHADOW,
-                backgroundColor: "white",
-                "&& fieldset": {
-                  border: "0",
-                },
-              }}
-            >
-              <MenuItem value={MODE_IMAGE}>Image</MenuItem>
-              <MenuItem value={MODE_VIDEO}>Video</MenuItem>
-              <MenuItem value={MODE_LIVESTREAM}>Live Stream</MenuItem>
-            </Select>
-          </FormControl>
-        </DropdownWrapper>
+      <DropdownWrapper>
+        <FormControl fullWidth>
+          <InputLabel>Input Method</InputLabel>
+          <Select
+            value={input}
+            label="Input Method"
+            onChange={handle_change}
+            sx={{
+              boxShadow: DEFAULT_SHADOW,
+              backgroundColor: "white",
+              "&& fieldset": {
+                border: "0",
+              },
+            }}
+          >
+            <MenuItem value={MODE_IMAGE}>Image</MenuItem>
+            <MenuItem value={MODE_VIDEO}>Video</MenuItem>
+            <MenuItem value={MODE_LIVESTREAM}>Live Stream</MenuItem>
+          </Select>
+        </FormControl>
+      </DropdownWrapper>
     </TitleContainer>
   )
 }
