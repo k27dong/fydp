@@ -17,7 +17,6 @@ const AppContainer = styled.div`
   @media ${device.tablet} {
     height: auto;
   }
-
 `
 
 const App = () => {
