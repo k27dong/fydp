@@ -4,7 +4,7 @@ import Title from "./title"
 import Body from "./body"
 import Result from "./result"
 import Footer from "./footer"
-import { MODE_INVALID } from "./const"
+import { MODE_INVALID, device } from "./const"
 
 const AppContainer = styled.div`
   height: 100vh;
@@ -13,6 +13,11 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  @media ${device.tablet} {
+    height: auto;
+  }
+
 `
 
 const App = () => {

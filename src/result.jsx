@@ -19,6 +19,7 @@ const ResultWrapper = styled.div`
     height: auto;
     margin-bottom: 1vh;
     padding: 1rem;
+    margin-top: 0;
   }
 `
 
