@@ -1,12 +1,10 @@
 from flask import Flask, request, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
-from app.detector import (
+from detector import (
     process_image,
     process_video,
-    process_livestream,
-    capture_begin,
-    process_base64_image,
+    process_livestream2,
 )
 
 app = Flask(
@@ -45,6 +43,7 @@ def image():
 
 @app.route("/api/video", methods=["POST"])
 def video():
+    # FIXME: breaks on production
     raw_video = request.files["video"]
     emotion_scores = process_video(raw_video)
     scores = [float(x) for x in emotion_scores]
@@ -61,24 +60,11 @@ def test_connect():
 def test_disconnect():
     print("Disconnected!")
 
-
-@socketio.on("start_stream")
-def start_stream():
-    cap = capture_begin()
-
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        processed_frame = process_livestream(frame)
-        emotion_scores = process_base64_image(frame)
-
-        # Emit the processed data to the client over the WebSocket connection
-        emit("processed_data", [float(x) for x in emotion_scores])
-        emit("processed_frame", processed_frame)
-
-    cap.release()
+@socketio.on("frame")
+def livestream(frame):
+    emotion_scores = process_livestream2(frame)
+    scores = [float(x) for x in emotion_scores]
+    emit("processed_data", scores)
 
 
 if __name__ == "__main__":

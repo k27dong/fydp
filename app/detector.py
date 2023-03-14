@@ -36,28 +36,7 @@ model = torch.load(
     map_location=torch.device("cpu"),
 ).eval()
 
-
-def process_base64_image(image):
-    gray_frame = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray_frame, 1.1, 6)
-    scores = []
-
-    # Creating Rectangle around face
-    for x, y, w, h in faces:
-        face_img = image[y : y + h, x : x + w]
-        img_tensor = transform(Image.fromarray(face_img))
-        img_tensor.unsqueeze_(0)
-        scores = model(img_tensor)
-        scores = scores[0].data.numpy()
-
-    # softmax
-    scores = np.exp(scores) / np.sum(np.exp(scores), axis=0)
-
-    return scores
-
-
-def process_image(raw_img):
-    image = cv2.imdecode(np.fromstring(raw_img, np.uint8), cv2.IMREAD_COLOR)
+def detect(image):
     faces = face_cascade.detectMultiScale(
         cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), 1.1, 6
     )
@@ -79,6 +58,11 @@ def process_image(raw_img):
     )
 
     return scores
+
+
+def process_image(raw_img):
+    image = cv2.imdecode(np.fromstring(raw_img, np.uint8), cv2.IMREAD_COLOR)
+    return detect(image)
 
 
 def process_video(raw_video):
@@ -121,34 +105,35 @@ def process_video(raw_video):
     return total_scores
 
 
-def process_livestream(frame):
-    # TODO: this is commented out for performance reasons
-    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray_frame, 1.1, 6)
+# def process_livestream(frame):
+#     # TODO: this is commented out for performance reasons
+#     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+#     faces = face_cascade.detectMultiScale(gray_frame, 1.1, 6)
 
-    for x, y, w, h in faces:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 250), 2)
-        face_img = frame[y : y + h, x : x + w]
-        img_tensor = transform(Image.fromarray(face_img))
-        img_tensor.unsqueeze_(0)
-        scores = model(img_tensor)
-        scores = scores[0].data.numpy()
-        cv2.putText(
-            frame,
-            EMOTION_INDEX[np.argmax(scores)],
-            (x + 10, y + 15),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.5,
-            (255, 255, 255),
-            2,
-            cv2.LINE_AA,
-        )
+#     for x, y, w, h in faces:
+#         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 250), 2)
+#         face_img = frame[y : y + h, x : x + w]
+#         img_tensor = transform(Image.fromarray(face_img))
+#         img_tensor.unsqueeze_(0)
+#         scores = model(img_tensor)
+#         scores = scores[0].data.numpy()
+#         cv2.putText(
+#             frame,
+#             EMOTION_INDEX[np.argmax(scores)],
+#             (x + 10, y + 15),
+#             cv2.FONT_HERSHEY_SIMPLEX,
+#             0.5,
+#             (255, 255, 255),
+#             2,
+#             cv2.LINE_AA,
+#         )
 
-    _, buffer = cv2.imencode(".jpg", frame)
-    processed_frame_str = base64.b64encode(buffer).decode("utf-8")
+#     _, buffer = cv2.imencode(".jpg", frame)
+#     processed_frame_str = base64.b64encode(buffer).decode("utf-8")
 
-    return processed_frame_str
+#     return processed_frame_str
 
-
-def capture_begin():
-    return cv2.VideoCapture(0)
+def process_livestream2(frame):
+    image = cv2.imdecode(np.fromstring(base64.b64decode(frame.split(',')[1]), np.uint8), cv2.IMREAD_COLOR)
+    scores = detect(image)
+    return scores
