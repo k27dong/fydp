@@ -36,6 +36,7 @@ model = torch.load(
     map_location=torch.device("cpu"),
 ).eval()
 
+
 def detect(image):
     faces = face_cascade.detectMultiScale(
         cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), 1.1, 6
@@ -133,7 +134,10 @@ def process_video(raw_video):
 
 #     return processed_frame_str
 
+
 def process_livestream2(frame):
-    image = cv2.imdecode(np.fromstring(base64.b64decode(frame.split(',')[1]), np.uint8), cv2.IMREAD_COLOR)
+    image = cv2.imdecode(
+        np.fromstring(base64.b64decode(frame.split(",")[1]), np.uint8), cv2.IMREAD_COLOR
+    )
     scores = detect(image)
     return scores

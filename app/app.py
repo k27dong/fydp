@@ -60,6 +60,7 @@ def test_connect():
 def test_disconnect():
     print("Disconnected!")
 
+
 @socketio.on("frame")
 def livestream(frame):
     emotion_scores = process_livestream2(frame)
