@@ -10,6 +10,7 @@ import {
   MODE_VIDEO,
   MODE_LIVESTREAM,
   DEFAULT_SHADOW,
+  device
 } from "./const"
 
 const TitleContainer = styled.div`
@@ -19,22 +20,43 @@ const TitleContainer = styled.div`
   width: 100%;
 `
 
-const TitleComponent = styled.div`
-  padding: 0 5rem;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 100%;
-`
-
 const Name = styled.h1`
   font-size: 2.5rem;
   font-family: "Roboto", sans-serif;
   color: #ff7d66;
   font-weight: 200;
+
+  @media ${device.tablet} {
+    font-size: 2rem;
+  }
 `
 
 const DropdownWrapper = styled(Box)`
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
+
+  padding: 1.5rem 5rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 100%;
+  min-width: 18vw;
+
+  @media ${device.tablet} {
+    padding: 1.5rem;
+    min-width: 190px;
+  }
+`
+
+const TitleWrapper = styled.div`
+  padding: 0 5rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 100%;
+  display: flex;
+align-items: center;
+
+@media ${device.tablet} {
+    padding: 0 1rem;
+  }
 `
 
 const Title = ({ input, setInput }) => {
@@ -44,13 +66,12 @@ const Title = ({ input, setInput }) => {
 
   return (
     <TitleContainer>
-      <TitleComponent>
+      <TitleWrapper>
         <a href="/" style={{ textDecoration: "none" }}>
           <Name>F Y D P</Name>
         </a>
-      </TitleComponent>
-      <TitleComponent>
-        <DropdownWrapper sx={{ minWidth: "18vw" }}>
+      </TitleWrapper>
+        <DropdownWrapper>
           <FormControl fullWidth>
             <InputLabel>Input Method</InputLabel>
             <Select
@@ -71,7 +92,6 @@ const Title = ({ input, setInput }) => {
             </Select>
           </FormControl>
         </DropdownWrapper>
-      </TitleComponent>
     </TitleContainer>
   )
 }

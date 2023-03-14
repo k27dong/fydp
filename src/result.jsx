@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { DEFAULT_SHADOW, EMOTION_MAP, device } from "./const"
 
@@ -14,8 +14,11 @@ const ResultWrapper = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
 
-  @media ${device.desktop} {
-    width: 100%;
+  @media ${device.tablet} {
+    flex-direction: column;
+    height: auto;
+    margin-bottom: 1vh;
+    padding: 1rem;
   }
 `
 
@@ -43,8 +46,33 @@ const EmotionWeight = styled.div`
   padding-top: 0.5rem;
 `
 
+const EmotionTableMobile = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-family: "Roboto", sans-serif;
+  justify-content: space-between;
+  margin-bottom: 5px;
+`
+
+const EmotionRowMobile = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 const Result = ({ input, result }) => {
-  function map_result_to_hex(h) {
+  const [width, setWidth] = useState(window.innerWidth)
+  const handleWindowSizeChange = () => setWidth(window.innerWidth)
+  const isMobile = width <= 768
+  const hasResult = result.length !== 0
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange)
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange)
+    }
+  }, [])
+
+  const map_result_to_hex = (h) => {
     const f = (n) => {
       const k = (n + (h + 40) / 30) % 12
       return Math.round(
@@ -58,16 +86,33 @@ const Result = ({ input, result }) => {
 
   return (
     <ResultWrapper>
-      {EMOTION_MAP.map((emotion, index) => {
-        return (
-          <EmotionItem key={index}>
-            <EmotionName style={{ color: map_result_to_hex(result[index]) }}>
-              {result.length === 0 ? "" : `${result[index]}%`}
-            </EmotionName>
-            <EmotionWeight>{emotion}</EmotionWeight>
-          </EmotionItem>
-        )
-      })}
+      {!isMobile
+        ? EMOTION_MAP.map((emotion, index) => {
+            return (
+              <EmotionItem key={index}>
+                <EmotionName
+                  style={{ color: map_result_to_hex(result[index]) }}
+                >
+                  {!hasResult ? "" : `${result[index]}%`}
+                </EmotionName>
+                <EmotionWeight>{emotion}</EmotionWeight>
+              </EmotionItem>
+            )
+          })
+        : !hasResult
+        ? <h2>{""}</h2>
+        : EMOTION_MAP.map((emotion, index) => {
+            return (
+              <EmotionTableMobile key={index}>
+                <EmotionRowMobile>{emotion}</EmotionRowMobile>
+                <EmotionRowMobile
+                  style={{ color: map_result_to_hex(result[index]) }}
+                >
+                  {`${result[index]}%`}
+                </EmotionRowMobile>
+              </EmotionTableMobile>
+            )
+          })}
     </ResultWrapper>
   )
 }

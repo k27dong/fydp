@@ -5,10 +5,10 @@ import MemoryIcon from "@mui/icons-material/Memory"
 
 const OptionBox = styled(Box)`
   text-align: center;
-  display: "flex";
-  flex-direction: "column";
-  align-items: "center";
-  justify-content: "center";
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   margin-top: 1rem;
 `
 
