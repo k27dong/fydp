@@ -2,9 +2,11 @@ import base64
 import numpy as np
 import cv2
 import torch
+import io
 import os
 from torchvision import transforms
 from PIL import Image
+from moviepy.editor import VideoFileClip
 
 IMG_SIZE = 260
 MODEL_PATH = "app/models/affectnet_emotions/enet_b2_8.pt"
@@ -69,32 +71,29 @@ def process_image(raw_img):
 def process_video(raw_video):
     total_scores = [0] * len(EMOTION_INDEX)
 
+
     os.makedirs(TEMP_VIDEO_STORAGE, exist_ok=True)
-    file_path = os.path.join(TEMP_VIDEO_STORAGE, raw_video.filename)
-    raw_video.save(file_path)
-    cap = cv2.VideoCapture(file_path)
+    video_file_path = os.path.join(TEMP_VIDEO_STORAGE, raw_video.filename)
+    raw_video.save(video_file_path)
+    print(video_file_path)
 
-    while True:
-        ret, frame = cap.read()
+    clip = VideoFileClip(video_file_path)
+    frames = []
+    t = 0
 
-        if not ret:
-            break
+    while t < clip.duration:
+        frame = clip.get_frame(t)
+        frame_buffer = io.BytesIO()
+        Image.fromarray(frame).save(frame_buffer, format='PNG')
+        frame_data = frame_buffer.getvalue()
+        frame_string = base64.b64encode(frame_data).decode('utf-8')
+        frames.append(frame_string)
+        t += 0.5
 
-        faces = face_cascade.detectMultiScale(
-            cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), 1.1, 6
-        )
-
-        for x, y, w, h in faces:
-            face_img = frame[y : y + h, x : x + w]
-            img_tensor = transform(Image.fromarray(face_img))
-            img_tensor.unsqueeze_(0)
-            scores = model(img_tensor)
-            scores = scores[0].data.numpy()
-
-        total_scores = [scores[i] + total_scores[i] for i in range(len(scores))]
-
-    cap.release()
-    os.remove(file_path)
+    for frame in frames:
+        image = cv2.imdecode(np.frombuffer(base64.b64decode(frame), np.uint8), cv2.IMREAD_COLOR)
+        scores = detect(image)
+        total_scores = np.add(total_scores, scores)
 
     # softmax
     total_scores = (
@@ -102,6 +101,12 @@ def process_video(raw_video):
         if total_scores is None
         else np.exp(total_scores) / np.sum(np.exp(total_scores), axis=0)
     )
+
+    clip.reader.close()
+    if clip.audio:
+        clip.audio.reader.close_proc()
+    del clip
+    os.remove(video_file_path)
 
     return total_scores
 

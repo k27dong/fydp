@@ -43,7 +43,6 @@ def image():
 
 @app.route("/api/video", methods=["POST"])
 def video():
-    # FIXME: breaks on production
     raw_video = request.files["video"]
     emotion_scores = process_video(raw_video)
     scores = [float(x) for x in emotion_scores]
