@@ -71,7 +71,6 @@ def process_image(raw_img):
 def process_video(raw_video):
     total_scores = [0] * len(EMOTION_INDEX)
 
-
     os.makedirs(TEMP_VIDEO_STORAGE, exist_ok=True)
     video_file_path = os.path.join(TEMP_VIDEO_STORAGE, raw_video.filename)
     raw_video.save(video_file_path)
@@ -84,14 +83,16 @@ def process_video(raw_video):
     while t < clip.duration:
         frame = clip.get_frame(t)
         frame_buffer = io.BytesIO()
-        Image.fromarray(frame).save(frame_buffer, format='PNG')
+        Image.fromarray(frame).save(frame_buffer, format="PNG")
         frame_data = frame_buffer.getvalue()
-        frame_string = base64.b64encode(frame_data).decode('utf-8')
+        frame_string = base64.b64encode(frame_data).decode("utf-8")
         frames.append(frame_string)
         t += 0.5
 
     for frame in frames:
-        image = cv2.imdecode(np.frombuffer(base64.b64decode(frame), np.uint8), cv2.IMREAD_COLOR)
+        image = cv2.imdecode(
+            np.frombuffer(base64.b64decode(frame), np.uint8), cv2.IMREAD_COLOR
+        )
         scores = detect(image)
         total_scores = np.add(total_scores, scores)
 
